@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using EasyCaptcha.Wpf;
 
 namespace Demo
 {
@@ -23,8 +25,15 @@ namespace Demo
         public MainWindow()
         {
             InitializeComponent();
-        }
+            UniformGridCaptcha.Visibility = Visibility.Hidden;
+            StackPanelButtonEnter.Visibility = Visibility.Visible;
+            MyCaptcha.CreateCaptcha(Captcha.LetterOption.Alphanumeric, 5);
+            // устанавливаем метод обратного вызова
 
+            // создаем таймер
+
+
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var listAllUsers = new List<User>();
@@ -47,7 +56,10 @@ namespace Demo
             }
             else
             {
-                MessageBox.Show("Проверьте правильность данных, пользовательне найден.");
+                StackPanelButtonEnter.Visibility = Visibility.Hidden;
+                UniformGridCaptcha.Visibility = Visibility.Visible;
+                NavigateText.Content = "Введите Каптчу";
+                MyCaptcha.CreateCaptcha(Captcha.LetterOption.Alphanumeric, 5);
             }
         }
 
@@ -56,6 +68,30 @@ namespace Demo
             
             ProductWindow productWindow = new ProductWindow();
             productWindow.Show();
+        }
+
+        private void ButtonAcceptCaptcha_Click(object sender, RoutedEventArgs e)
+        {
+            var answer = MyCaptcha.CaptchaText;
+            if (answer == TextBoxCaptcha.Text)
+            {
+                StackPanelButtonEnter.Visibility = Visibility.Visible;
+                UniformGridCaptcha.Visibility = Visibility.Hidden;
+
+                TextBoxEnter.IsEnabled = true;
+                PasswordBoxEnter.IsEnabled = true;
+                NavigateText.Content = "Пожалуйста, введите свои данные для входа или продолжайте в качестве гостя";
+                UserNameForm.IsEnabled = true;
+                UserPasswordForm.IsEnabled = true;
+            }
+            else
+            {
+                MyCaptcha.CreateCaptcha(Captcha.LetterOption.Alphanumeric, 5);
+                MessageBox.Show("Incorrect captcha. Please enter captcha again.");
+                this.IsEnabled = false;
+                Thread.Sleep(10000);
+                this.IsEnabled = true;
+            }
         }
     }
 }

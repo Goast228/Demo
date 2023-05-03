@@ -2,36 +2,70 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Demo"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
       Title="Product Catalog" Height="500" Width="1300"
         Background="#FFFFFF">
+    <Window.Resources>
+        <system:String x:Key="NullImage">
+            C:\Users\Арсений\OneDrive\Рабочий стол\Demo\Demo\Resources\picture.png
+        </system:String>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="9*"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <!-- Заголовок окна -->
-        <Border Grid.Row="0" Background="#498C51" Height="60">
-            <TextBlock Text="Product Catalog" FontFamily="Comic Sans MS" FontSize="26" 
-                       Foreground="#FFFFFF" VerticalAlignment="Center" Margin="20,0"/>
-        </Border>
-
-        <!-- Список товаров -->
-        <StackPanel Grid.Row="1" Orientation="Vertical">
-            <DataGrid Height="350" x:Name="ProductList">
-                
-            </DataGrid>
-            <StackPanel Orientation="Horizontal">
-                <Button Width="150" Height="50" Content="По возрастанию цены" Click="Button_Click"></Button>
-                <Button Width="150" Height="50" Content="По убыванию цены" Click="Button_Click_1" Margin="0,0,150,0"></Button>
-                <Button Width="150" Height="50" Content="Все диапазоны" Click="Button_Click_2"></Button>
-                <Button Width="150" Height="50" Content="0%-10%" Click="Button_Click_3"></Button>
-                <Button Width="150" Height="50" Content="10%-15%" Click="Button_Click_4"></Button>
-                <Button Width="150" Height="50" Content="15% и более" Click="Button_Click_5"></Button>
-            </StackPanel>
-        </StackPanel>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">USER NAME</TextBlock>
+            <Button Name="ButtonExit"  Grid.Column="4">EXIT</Button>
+            <Label Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="10" x:Name="NumberOfGoods" Content=" из "></Label>
+            <ComboBox Name="ComboBoxFilterProductDiscountAmount" SelectionChanged="ComboBoxFilterProductDiscountAmount_OnSelectionChanged"/>
+        </Grid>
+        <ListView  Grid.Row="2" Grid.ColumnSpan="2" x:Name="ListProducts" ScrollViewer.HorizontalScrollBarVisibility="Hidden" >
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate >
+                    <StackPanel  HorizontalAlignment="Center" Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="1" BorderBrush="Black">
+                        <Grid Width="700" Height="200" Background="{Binding ColorProductDiscountAmount}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Row="0" Grid.RowSpan="4" BorderThickness="1" Padding="5" Margin="5" BorderBrush="Black">
+                                <Image Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Source="{Binding ProductPhotoFromResources, FallbackValue={StaticResource NullImage}}" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+                            </Border>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding ProductName}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ProductDescription}" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding ProductManufacturer.ProductManufacturerName}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding ProductCost}" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                            <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="2" BorderThickness="1" Padding="5" Margin="5" BorderBrush="Black">
+                                <TextBlock Grid.Row="0" Grid.RowSpan="4" Grid.Column="2" Text="{Binding ProductDiscountAmount}" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>

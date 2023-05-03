@@ -20,67 +20,69 @@ namespace Demo
     /// </summary>
     public partial class ProductWindow : Window
     {
+        
         public ProductWindow()
         {
-            
+
             InitializeComponent();
-            using (DBDemoEntities db = new DBDemoEntities())
+            using (var context = new DBDemoEntities())
             {
-                ProductList.ItemsSource = db.Product.ToList<Product>();
+                ListProducts.ItemsSource = context.Product.ToList();
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
             
-            using (DBDemoEntities db = new DBDemoEntities())
-            {
-                ProductList.ItemsSource = db.Product.ToList<Product>().OrderByDescending(x => x.ProductCost);
-            }
-        }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+            ComboBoxFilterProductDiscountAmount.ItemsSource = new List<string>
         {
-            using (DBDemoEntities db = new DBDemoEntities())
-            {
-                ProductList.ItemsSource = db.Product.ToList<Product>().OrderBy(x => x.ProductCost);
-                
-            }
+            "0-10%", "10-15%", "15-∞%", "All ranges"
+        };
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+
+        private void Window_Closed(object sender, System.EventArgs e)
         {
-            using (DBDemoEntities db = new DBDemoEntities())
-            {
-                ProductList.ItemsSource = db.Product.ToList<Product>();
-            }
+            Close();
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void ComboBoxFilterProductDiscountAmount_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            using (DBDemoEntities db = new DBDemoEntities())
+            switch (ComboBoxFilterProductDiscountAmount.SelectedIndex)
             {
-                ProductList.ItemsSource = db.Product.ToList<Product>().Where(x => x.ProductMaxDiscountAmount<10);
-
+                case 0:
+                    {
+                        using (var context = new DBDemoEntities())
+                        {
+                            ListProducts.ItemsSource = context.Product.Where(p => p.ProductDiscountAmount < 10).ToList();
+                        }
+                        break;
+                    }
+                case 1:
+                    {
+                        using (var context = new DBDemoEntities())
+                        {
+                            ListProducts.ItemsSource = context.Product.Where(p => p.ProductDiscountAmount > 10 && p.ProductDiscountAmount < 15).ToList();
+                        }
+                        break;
+                    }
+                case 2:
+                    {
+                        using (var context = new DBDemoEntities())
+                        {
+                            ListProducts.ItemsSource = context.Product.Where(p => p.ProductDiscountAmount > 15).ToList();
+                        }
+                        break;
+                    }
+                case 3:
+                    {
+                        using (var context = new DBDemoEntities())
+                        {
+                            ListProducts.ItemsSource = context.Product.ToList();
+                        }
+                        break;
+                        
+                    }
             }
         }
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
-        {
-            using (DBDemoEntities db = new DBDemoEntities())
-            {
-                ProductList.ItemsSource = db.Product.ToList<Product>().Where(x => x.ProductMaxDiscountAmount >= 10 && x.ProductMaxDiscountAmount<15);
-
-            }
-        }
-
-        private void Button_Click_5(object sender, RoutedEventArgs e)
-        {
-            using (DBDemoEntities db = new DBDemoEntities())
-            {
-                ProductList.ItemsSource = db.Product.ToList<Product>().Where(x => x.ProductMaxDiscountAmount >= 15);
-
-            }
-        }
+        
     }
 }

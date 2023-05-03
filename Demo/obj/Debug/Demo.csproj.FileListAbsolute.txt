@@ -22,3 +22,5 @@ C:\Users\Арсений\OneDrive\Рабочий стол\Demo\Demo\obj\Debug\Dem
 C:\Users\Арсений\OneDrive\Рабочий стол\Demo\Demo\obj\Debug\Demo.csproj.CopyComplete
 C:\Users\Арсений\OneDrive\Рабочий стол\Demo\Demo\obj\Debug\Demo.exe
 C:\Users\Арсений\OneDrive\Рабочий стол\Demo\Demo\obj\Debug\Demo.pdb
+C:\Users\Арсений\OneDrive\Рабочий стол\Demo\Demo\bin\Debug\EasyCaptcha.Wpf.dll
+C:\Users\Арсений\OneDrive\Рабочий стол\Demo\Demo\bin\Debug\EasyCaptcha.Wpf.pdb

@@ -11,7 +11,9 @@ namespace Demo
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Windows.Media;
+
     public partial class Product
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -40,5 +42,10 @@ namespace Demo
         public virtual ProductManufacturer ProductManufacturer { get; set; }
         public virtual ProductSupplier ProductSupplier { get; set; }
         public virtual UnitType UnitType { get; set; }
+
+        [NotMapped]
+        public string ProductPhotoFromResources => "/Resources/" + ProductPhoto;
+        [NotMapped]
+        public SolidColorBrush ColorProductDiscountAmount => ProductDiscountAmount > 15 ? new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString("#7fff00")) : new SolidColorBrush(System.Windows.Media.Color.FromArgb(0, 0, 0, 0));
     }
 }
